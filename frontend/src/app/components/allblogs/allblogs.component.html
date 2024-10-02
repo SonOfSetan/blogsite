@@ -1,0 +1,35 @@
+<section class="pt-5">
+  <div class="pt-5 container mb-5">
+    <div class="row gy-5">
+      <ng-container *ngIf="allBlogs.length > 0; else noDataTemplate">
+        <app-blog-item
+          class="col-sm-6 col-lg-4 card-justify-height"
+          *ngFor="let blog of allBlogs | search : searchKey"
+          [blog]="blog"
+        >
+        </app-blog-item>
+      </ng-container>
+      <ng-template #noDataTemplate>
+        <div class="col-9 mx-auto text-center">
+          <app-errors></app-errors>
+        </div>
+      </ng-template>
+      <div
+        *ngIf="
+          !(allBlogs.length == 0) &&
+          (allBlogs | search : searchKey).length === 0
+        "
+      >
+        <div class="col-9 mx-auto text-center">
+          <div class="alert alert-danger shadow fw-bold py-4 fs-5">
+            No blogs found!
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-paginator
+    *ngIf="(allBlogs | search : searchKey).length !== 0"
+  ></app-paginator>
+</section>
+
