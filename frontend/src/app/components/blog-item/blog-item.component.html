@@ -3,7 +3,7 @@
             <p-card>
                 <div class="d-flex flex-column justify-content-start card-controller">
                     <div class="custom-cover-image overflow-hidden">
-                        <img alt="Card" [src]="blog?.social_image ? blog?.social_image : 'assets/images/safe.webp'" class="w-100 h-100 cover"/>
+                        <img alt="Card" [src]="blog?.imageUrl ? blog?.imageUrl : 'assets/images/safe.webp'" class="w-100 h-100 cover"/>
                     </div>                    
                 <ng-container *ngIf="blog">
                     <p class="sub-header">{{blog.tag_list[0]}}</p>
@@ -14,14 +14,14 @@
                         <i class="fa-solid fa-arrow-up custom-arrow"></i>
                     </div>
                 </div>
-                    <p class=" mb-0 cardbody-content">{{blog?.description}}</p>
+                    <p class=" mb-0 cardbody-content">{{blog?.content}}</p>
                     <div class="d-flex align-content-end custom-footer">
                         <div class="img-container me-1">
-                            <img class="w-100 rounded-circle h-100" [src]="blog?.social_image ? blog?.social_image : 'assets/images/safe.webp'" alt="blogger image">
+                            <img class="w-100 rounded-circle h-100" [src]="blog?.imageUrl ? blog?.imageUrl : 'assets/images/safe.webp'" alt="blogger image">
                         </div>
                         <div class="d-flex flex-column">
                             <p class="blogger fw-medium mb-0">{{blog?.user?.name}}</p>
-                            <p class="date mb-0">{{blog?.published_at | date:'dd MMM yyyy'}}</p>
+                            <p class="date mb-0">{{blog?.created_at | date:'dd MMM yyyy'}}</p>
                         </div>
                     </div>
                 </div>

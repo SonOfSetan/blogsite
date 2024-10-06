@@ -33,6 +33,7 @@ getAllBlogs(){
 this.subObject['allBlogs'] =  this._blogsService.getBlogs(this.limit).subscribe({
   next:(res)=>{
     this.allBlogs = res;
+    console.log(this.allBlogs);
   },
   error:(err)=>{
     this.errShow = true;

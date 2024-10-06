@@ -1,7 +1,11 @@
 package com.thecodinghouse.blogsite.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
+import com.thecodinghouse.blogsite.model.User;
+import com.thecodinghouse.blogsite.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,33 +15,50 @@ import com.thecodinghouse.blogsite.repository.BlogPostRepository;
 @Service
 public class BlogPostService {
 
-	@Autowired
+    @Autowired
     private BlogPostRepository blogPostRepository;
 
-    public BlogPost createBlogPost(BlogPost blogPost) {
-        blogPost.setCreatedAt(java.time.LocalDateTime.now());
-        return blogPostRepository.save(blogPost);
+    @Autowired
+    private UserRepository userRepository;
+
+    public BlogPost createBlogPost(BlogPost blogPost, Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        blogPost.setUser(user);  // Associate blog post with the user
+        blogPost.setCreatedAt(LocalDateTime.now());  // Set created date
+        return blogPostRepository.save(blogPost);  // Save blog post
     }
 
     public List<BlogPost> getAllBlogPosts() {
         return blogPostRepository.findAll();
     }
 
-    public BlogPost getBlogPostById(Long id) {
-        return blogPostRepository.findById(id).orElse(null);
+    public Optional<BlogPost> getBlogPostById(Long id) {
+        return blogPostRepository.findById(id);
     }
 
-    public BlogPost updateBlogPost(Long id, BlogPost updatedBlogPost) {
-        BlogPost existingBlogPost = blogPostRepository.findById(id).orElse(null);
-        if (existingBlogPost != null) {
-            existingBlogPost.setTitle(updatedBlogPost.getTitle());
-            existingBlogPost.setContent(updatedBlogPost.getContent());
-            existingBlogPost.setImageUrl(updatedBlogPost.getImageUrl());
-            existingBlogPost.setVideoUrl(updatedBlogPost.getVideoUrl());
-            existingBlogPost.setEmbeddedLink(updatedBlogPost.getEmbeddedLink());
+    public Optional<BlogPost> updateBlogPost(Long id, BlogPost updatedBlogPost) {
+        return blogPostRepository.findById(id).map(existingBlogPost -> {
+            if (updatedBlogPost.getTitle() != null) {
+                existingBlogPost.setTitle(updatedBlogPost.getTitle());
+            }
+            if (updatedBlogPost.getContent() != null) {
+                existingBlogPost.setContent(updatedBlogPost.getContent());
+            }
+            if (updatedBlogPost.getImageUrl() != null) {
+                existingBlogPost.setImageUrl(updatedBlogPost.getImageUrl());
+            }
+            if (updatedBlogPost.getVideoUrl() != null) {
+                existingBlogPost.setVideoUrl(updatedBlogPost.getVideoUrl());
+            }
+            if (updatedBlogPost.getEmbeddedLink() != null) {
+                existingBlogPost.setEmbeddedLink(updatedBlogPost.getEmbeddedLink());
+            }
+            if (updatedBlogPost.getTag_list() != null) {
+                existingBlogPost.setTag_list(updatedBlogPost.getTag_list());
+            }
             return blogPostRepository.save(existingBlogPost);
-        }
-        return null;
+        });
     }
 
     public void deleteBlogPost(Long id) {

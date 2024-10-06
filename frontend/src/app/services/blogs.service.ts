@@ -12,7 +12,7 @@ export class BlogsService {
   searchValue: BehaviorSubject<string>= new BehaviorSubject('');
 
   getBlogs(limit: number): Observable<any> {
-    return this._http.get(`https://dev.to/api/articles?per_page=${limit}`);
+    return this._http.get(`http://localhost:8080/api/v1/blogposts/getAllBlogs`);
   }
 
   updateLimit(limitNo: number){
@@ -20,7 +20,7 @@ export class BlogsService {
   }
 
   UpdateSearchValue(value: string){    
-return this.searchValue.next(value);
+    return this.searchValue.next(value);
   }
 
 }

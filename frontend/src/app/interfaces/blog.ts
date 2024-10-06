@@ -1,6 +1,7 @@
 export interface Blog {
 
     canonical_url: string;
+    content:string;
     collection_id: number | null;
     comments_count: number;
     cover_image: string;
@@ -20,12 +21,14 @@ export interface Blog {
     reading_time_minutes: number;
     slug: string;
     social_image: string;
+    imageUrl:string;
     tag_list: string[];
     tags: string;
     title: string;
     type_of: string;
     url: string;
     user: User;
+    
 }
 
 interface Organization {
